@@ -1,6 +1,7 @@
 const express = require('express');
 const { isEmpty } = require('lodash');
 const User = require('../models/user');
+const Recipe = require('../models/recipe');
 const router = express.Router();
 
 router.post('/add', async (req, res) => {
@@ -18,8 +19,15 @@ router.post('/add', async (req, res) => {
         company,
         date: Date.now()
     });
+
+    const newRecipe = new Recipe({
+        title: 'title1',
+        ingredients: 'ingredients1'
+    });
+
     try {
         await newUser.save();
+        await newRecipe.save();
         res.json({
             message: 'Data successfully saved',
             statusCode: 200,
@@ -50,7 +58,7 @@ router.get('/users', async (req, res) => {
             message: 'Internal Server error'
         });
     }
-       
+
 });
 
 module.exports = router;
